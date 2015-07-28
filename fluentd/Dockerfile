@@ -17,7 +17,7 @@ LABEL io.k8s.description="Fluentd container for collecting of docker container l
 
 RUN gem install fluentd fluent-plugin-kubernetes_metadata_filter fluent-plugin-elasticsearch
 
-COPY fluent.conf /etc/fluent/fluent.conf
 COPY out_elasticsearch.rb /opt/openshift/src/gems/fluent-plugin-elasticsearch-0.9.0/lib/fluent/plugin/out_elasticsearch.rb
+COPY fluent.conf /etc/fluent/fluent.conf
 
 CMD ["fluentd"]

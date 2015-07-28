@@ -1,0 +1,45 @@
+cluster.name: ${CLUSTER_NAME}
+script.disable_dynamic: false
+#searchguard.key_path: .
+#searchguard.auditlog.enabled: true
+
+############################# Search-Guard ################################
+#searchguard.check_for_root: false
+
+######################################
+# Authentication backend             #
+#                                    #
+######################################
+searchguard.authentication.authentication_backend.impl: com.floragunn.searchguard.authentication.backend.simple.SettingsBasedAuthenticationBackend
+
+######################################
+# Authorization backend (authorizer) #
+#                                    #
+######################################
+searchguard.authentication.authorizer.impl: com.floragunn.searchguard.authorization.simple.SettingsBasedAuthorizator
+
+######################################
+# HTTP authentication method         #
+#                                    #
+######################################
+searchguard.authentication.http_authenticator.impl: com.floragunn.searchguard.authentication.http.basic.HTTPBasicAuthenticator
+
+##### authentication
+searchguard.authentication.settingsdb.user.admin: secret
+searchguard.authentication.settingsdb.user.fluentd: changeme
+searchguard.authentication.settingsdb.user.kibana: changeme
+
+##### authorization
+searchguard.authentication.authorization.settingsdb.roles.admin: ["root"]
+searchguard.authentication.authorization.settingsdb.roles.fluentd: ["fluentd"]
+searchguard.authentication.authorization.settingsdb.roles.kibana: ["kibana"]
+
+##### roles
+# Configure the actionrequestfilter to allow or forbid action 
+searchguard.actionrequestfilter.names: ["readonly", "fluentd", "kibana"]
+searchguard.actionrequestfilter.readonly.allowed_actions: ["indices:data/read/*", "*monitor*"]
+searchguard.actionrequestfilter.readonly.forbidden_actions: ["cluster:*", "indices:admin*"]
+
+searchguard.actionrequestfilter.fluentd.allowed_actions: ["indices:data/write/*", "indices:admin/create"]
+
+searchguard.actionrequestfilter.readonly.allowed_actions: ["indices:data/read/*", "*monitor*", "indices:admin/read"]

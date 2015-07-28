@@ -23,6 +23,18 @@ RUN rpm --import https://packages.elastic.co/GPG-KEY-elasticsearch && \
 RUN mkdir -p /usr/share/elasticsearch/config && \
   cp /etc/elasticsearch/* /usr/share/elasticsearch/config
 
-VOLUME /usr/share/elasticsearch/data
+#VOLUME /usr/share/elasticsearch/data
 
-CMD ["/usr/share/elasticsearch/bin/elasticsearch", "-Des.pidfile=/var/run/elasticsearch/elasticsearch.pid", "-Des.cluster.name=$CLUSTER_NAME"]
+
+COPY initialize.sh /opt/openshift/src/initialize.sh
+RUN sh initialize.sh
+COPY elasticsearch.yml /usr/share/elasticsearch/config/elasticsearch.yml
+COPY logging.yml /usr/share/elasticsearch/config/logging.yml
+
+RUN chmod -R og+w /usr/share/elasticsearch
+
+USER default
+
+#CMD ["/usr/share/elasticsearch/bin/elasticsearch", "-Des.pidfile=/var/run/elasticsearch/elasticsearch.pid"]
+#CMD ["/usr/share/elasticsearch/bin/elasticsearch", "-Des.logger.level=WARN"]
+CMD ["/usr/share/elasticsearch/bin/elasticsearch"]
