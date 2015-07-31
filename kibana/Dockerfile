@@ -11,10 +11,13 @@ LABEL io.k8s.description="Kibana container for querying Elasticsearch for aggreg
 
 RUN wget -q https://download.elastic.co/kibana/kibana/kibana-4.1.1-linux-x64.tar.gz && \
   tar -xzf kibana-4.1.1-linux-x64.tar.gz && \
-  mv kibana-4.1.1-linux-x64/* /opt/openshift/src/ && \
-  rm -rf kibana-4.1.1-linux-x64*
+  mv kibana-4.1.1-linux-x64/* /opt/app-root/src/ && \
+  rm -rf kibana-4.1.1-linux-x64* && \
+  chmod -R og+w /opt/app-root/src
 
-COPY kibana.yml /opt/openshift/src/config/kibana.yml
-COPY run.sh /opt/openshift/src/run.sh
+COPY kibana.yml /opt/app-root/src/config/kibana.yml
+COPY run.sh /opt/app-root/src/run.sh
+
+USER default
 
 CMD ["sh", "run.sh"]
