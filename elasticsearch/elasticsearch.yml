@@ -24,6 +24,27 @@ searchguard.authentication.authorizer.impl: com.floragunn.searchguard.authorizat
 ######################################
 searchguard.authentication.http_authenticator.impl: com.floragunn.searchguard.authentication.http.basic.HTTPBasicAuthenticator
 
+#####################################
+# HTTPS settings                    #
+#                                   #
+#####################################
+# Enable or disable rest layer security (https)
+searchguard.ssl.transport.http.enabled: false
+# JKS or PKCS12
+#searchguard.ssl.transport.http.keystore_type: JKS
+# Absolute path to the keystore file (this stores the server certificates)
+#searchguard.ssl.transport.http.keystore_filepath: /usr/share/elasticsearch/keys/node-keystore.jks
+# Keystore password
+#searchguard.ssl.transport.http.keystore_password: kspass
+# Do the clients (typically the browser or the proxy) have to authenticate themself to the http server, default is false
+#searchguard.ssl.transport.http.enforce_clientauth: true
+# JKS or PKCS12
+#searchguard.ssl.transport.http.truststore_type: JKS
+# Absolute path to the truststore file (this stores the client certificates)
+#searchguard.ssl.transport.http.truststore_filepath: /usr/share/elasticsearch/keys/truststore.jks
+# Truststore password
+#searchguard.ssl.transport.http.truststore_password: tspass
+
 ##### authentication
 searchguard.authentication.settingsdb.user.admin: secret
 searchguard.authentication.settingsdb.user.fluentd: changeme

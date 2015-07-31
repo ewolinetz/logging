@@ -4,7 +4,7 @@ MAINTAINER Eric Wolinetz <ewolinet@redhat.com>
 
 ENV RUBY_VERSION=2.0 \
   FLUENTD_VERSION=0.12.6 \
-  GEM_HOME=/opt/openshift/src
+  GEM_HOME=/opt/app-root/src
 
 RUN yum install -y --setopt=tsflags=nodocs \
   ruby \
@@ -17,7 +17,7 @@ LABEL io.k8s.description="Fluentd container for collecting of docker container l
 
 RUN gem install fluentd fluent-plugin-kubernetes_metadata_filter fluent-plugin-elasticsearch
 
-COPY out_elasticsearch.rb /opt/openshift/src/gems/fluent-plugin-elasticsearch-0.9.0/lib/fluent/plugin/out_elasticsearch.rb
+COPY out_elasticsearch.rb /opt/app-root/src/gems/fluent-plugin-elasticsearch-0.9.0/lib/fluent/plugin/out_elasticsearch.rb
 COPY fluent.conf /etc/fluent/fluent.conf
 
 CMD ["fluentd"]
