@@ -41,5 +41,4 @@ searchguard.actionrequestfilter.readonly.allowed_actions: ["indices:data/read/*"
 searchguard.actionrequestfilter.readonly.forbidden_actions: ["cluster:*", "indices:admin*"]
 
 searchguard.actionrequestfilter.fluentd.allowed_actions: ["indices:data/write/*", "indices:admin/create"]
-
-searchguard.actionrequestfilter.readonly.allowed_actions: ["indices:data/read/*", "*monitor*", "indices:admin/read", "indices:admin/exists", "indices:admin/create", "indices:admin/refresh", "indices:admin/mappings/field/get*", "indices:admin/mapping/put", "indices:admin/validate/*", "indices:data/write/update", "indices:data/write/index"]
+searchguard.actionrequestfilter.readonly.allowed_actions: ["indices:data/read/*", "*monitor*", "indices:admin/read", "indices:admin/mappings/fields/get*"]
