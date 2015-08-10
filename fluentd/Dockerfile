@@ -8,7 +8,10 @@ ENV RUBY_VERSION=2.0 \
 
 RUN yum install -y --setopt=tsflags=nodocs \
   ruby \
-  ruby-devel
+  ruby-devel \
+  libcurl-devel \
+  make && \
+  mkdir -p ${HOME}
 
 LABEL io.k8s.description="Fluentd container for collecting of docker container logs" \
   io.k8s.display-name="Fluentd 0.12.6" \
@@ -19,5 +22,8 @@ RUN gem install fluentd fluent-plugin-kubernetes_metadata_filter fluent-plugin-e
 
 COPY out_elasticsearch.rb /opt/app-root/src/gems/fluent-plugin-elasticsearch-0.9.0/lib/fluent/plugin/out_elasticsearch.rb
 COPY fluent.conf /etc/fluent/fluent.conf
+#COPY root-ca.crt /etc/fluent/keys/root-ca.crt
+#COPY fluentd-elasticsearch-pkey.key /etc/fluent/keys/fluentd-elasticsearch-pkey.key
+#COPY fluentd-elasticsearch-signed.crt /etc/fluent/keys/fluentd-elasticsearch-signed.crt
 
 CMD ["fluentd"]
