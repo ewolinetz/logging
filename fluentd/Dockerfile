@@ -1,4 +1,4 @@
-FROM openshift/base-centos7
+FROM centos:centos7
 
 MAINTAINER Eric Wolinetz <ewolinet@redhat.com>
 
