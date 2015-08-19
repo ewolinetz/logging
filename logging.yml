@@ -94,6 +94,9 @@ items:
       - name: varlibdockercontainers
         mountPath: /var/lib/docker/containers
         readOnly: true
+      - name: certs
+        mountPath: /etc/fluent/keys
+        readOnly: true
       env:
       - name: "ES_HOST"
         value: "es-logging"
@@ -106,6 +109,9 @@ items:
     - name: varlibdockercontainers
       hostPath:
         path: /var/lib/docker/containers
+    - name: certs
+      secret:
+        secretName: fluentd
 -
   apiVersion: "v1"
   kind: "Service"
@@ -151,3 +157,11 @@ items:
                 value: "es-logging"
               - name: "ES_PORT"
                 value: "9200"
+            volumeMounts:
+              - name: certs
+                mountPath: /etc/kibana/keys
+                readOnly: true
+        volumes:
+          - name: certs
+            secret:
+              secretName: kibana

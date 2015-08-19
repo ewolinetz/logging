@@ -30,7 +30,14 @@ sleep 30; curl -XPUT 'http://localhost:9200/searchguard/ac/ac?pretty' -d '
       "filters_execute": ["actionrequestfilter.fluentd"]
     },
     {
-      "__Comment__": "This is so that kibana can only read",
+      "__Comment__": "This is so that kibana can do anything with the .kibana index",
+      "users": ["kibana"],
+      "indices": [".kibana"],
+      "filters_bypass": [*],
+      "filters_execute": []
+    },
+    {
+      "__Comment__": "This is so that kibana can read for every other index",
       "users": ["kibana"],
       "filters_bypass": [],
       "filters_execute": ["actionrequestfilter.kibana"]

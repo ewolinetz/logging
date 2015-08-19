@@ -2,11 +2,15 @@ FROM openshift/base-centos7
 
 MAINTAINER Eric Wolinetz <ewolinet@redhat.com>
 
-ENV RUBY_VERSION=2.0 \
+ENV HOME=/opt/app-root/src \
+  PATH=/opt/app-root/src/bin:/opt/app-root/bin:$PATH \
+  RUBY_VERSION=2.0 \
   FLUENTD_VERSION=0.12.6 \
   GEM_HOME=/opt/app-root/src
 
-RUN yum install -y --setopt=tsflags=nodocs \
+RUN rpmkeys --import file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7 && \
+  yum install -y --setopt=tsflags=nodocs \
+  gcc-c++ \
   ruby \
   ruby-devel \
   libcurl-devel \
@@ -20,10 +24,9 @@ LABEL io.k8s.description="Fluentd container for collecting of docker container l
 
 RUN gem install fluentd fluent-plugin-kubernetes_metadata_filter fluent-plugin-elasticsearch
 
-COPY out_elasticsearch.rb /opt/app-root/src/gems/fluent-plugin-elasticsearch-0.9.0/lib/fluent/plugin/out_elasticsearch.rb
+COPY out_elasticsearch.rb /opt/app-root/src/gems/fluent-plugin-elasticsearch-1.0.0/lib/fluent/plugin/out_elasticsearch.rb
 COPY fluent.conf /etc/fluent/fluent.conf
-#COPY root-ca.crt /etc/fluent/keys/root-ca.crt
-#COPY fluentd-elasticsearch-pkey.key /etc/fluent/keys/fluentd-elasticsearch-pkey.key
-#COPY fluentd-elasticsearch-signed.crt /etc/fluent/keys/fluentd-elasticsearch-signed.crt
+
+WORKDIR ${HOME}
 
 CMD ["fluentd"]

@@ -31,10 +31,10 @@ class Fluent::ElasticsearchOutput < Fluent::BufferedOutput
   config_param :ssl_verify, :bool, :default => true
   config_param :remove_keys, :string, :default => nil
   config_param :use_kube_meta, :bool, :default => false
-  config_param :client_key, :string
-  config_param :client_cert, :string
-  #config_param :key_pass, :string
-  config_param :ca_file, :string
+  config_param :client_key, :string, :default => nil
+  config_param :client_cert, :string, :default => nil
+  config_param :client_key_pass, :string, :default => nil
+  config_param :ca_file, :string, :default => nil
 
   include Fluent::SetTagKeyMixin
   config_set_default :include_tag_key, false
@@ -56,7 +56,7 @@ class Fluent::ElasticsearchOutput < Fluent::BufferedOutput
 
   def client
     @_es ||= begin
-      excon_options = { client_key: @client_key, client_cert: @client_cert }
+      excon_options = { client_key: @client_key, client_cert: @client_cert, client_key_pass: @client_key_pass }
       adapter_conf = lambda {|f| f.adapter :excon, excon_options }
       transport = Elasticsearch::Transport::Transport::HTTP::Faraday.new(
         get_connection_options.merge(
