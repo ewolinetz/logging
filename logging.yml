@@ -74,6 +74,14 @@ items:
             -
               containerPort: 9300
               name: "transport"
+            volumeMounts:
+              - name: certs
+                mountPath: /etc/elasticsearch/keys
+                readOnly: true
+        volumes:
+          - name: certs
+            secret:
+              secretName: elasticsearch
 -
   apiVersion: v1
   kind: Pod
