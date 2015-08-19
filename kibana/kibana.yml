@@ -5,7 +5,7 @@ port: 5601
 host: "0.0.0.0"
 
 # The Elasticsearch instance to use for all your queries.
-elasticsearch_url: "http://es_host:es_port"
+elasticsearch_url: "https://es_host:es_port"
 
 # preserve_elasticsearch_host true will send the hostname specified in `elasticsearch`. If you set it to false,
 # then the host you use to connect to *this* Kibana instance will be sent.
@@ -23,12 +23,12 @@ kibana_elasticsearch_username: kibana
 kibana_elasticsearch_password: changeme
 
 # If your Elasticsearch requires client certificate and key
-# kibana_elasticsearch_client_crt: /path/to/your/client.crt
-# kibana_elasticsearch_client_key: /path/to/your/client.key
+kibana_elasticsearch_client_crt: /etc/kibana/keys/cert
+kibana_elasticsearch_client_key: /etc/kibana/keys/key
 
 # If you need to provide a CA certificate for your Elasticsarech instance, put
 # the path of the pem file here.
-# ca: /path/to/your/CA.pem
+ca: /etc/kibana/keys/ca
 
 # The default application to load.
 default_app_id: "discover"

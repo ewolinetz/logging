@@ -12,7 +12,9 @@ RUN rpmkeys --import file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7 && \
   yum install -y --setopt=tsflags=nodocs \
   gcc-c++ \
   ruby \
-  ruby-devel && \
+  ruby-devel \
+  libcurl-devel \
+  make && \
   mkdir -p ${HOME}
 
 LABEL io.k8s.description="Fluentd container for collecting of docker container logs" \
@@ -22,7 +24,7 @@ LABEL io.k8s.description="Fluentd container for collecting of docker container l
 
 RUN gem install fluentd fluent-plugin-kubernetes_metadata_filter fluent-plugin-elasticsearch
 
-COPY out_elasticsearch.rb /opt/app-root/src/gems/fluent-plugin-elasticsearch-0.9.0/lib/fluent/plugin/out_elasticsearch.rb
+COPY out_elasticsearch.rb /opt/app-root/src/gems/fluent-plugin-elasticsearch-1.0.0/lib/fluent/plugin/out_elasticsearch.rb
 COPY fluent.conf /etc/fluent/fluent.conf
 
 WORKDIR ${HOME}

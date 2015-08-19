@@ -34,6 +34,4 @@ RUN chmod -R og+w /usr/share/elasticsearch
 
 USER default
 
-#CMD ["/usr/share/elasticsearch/bin/elasticsearch", "-Des.pidfile=/var/run/elasticsearch/elasticsearch.pid"]
-#CMD ["/usr/share/elasticsearch/bin/elasticsearch", "-Des.logger.level=WARN"]
 CMD ["/usr/share/elasticsearch/bin/elasticsearch"]
