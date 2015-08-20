@@ -21,6 +21,7 @@ class Fluent::ElasticsearchOutput < Fluent::BufferedOutput
   config_param :logstash_dateformat, :string, :default => "%Y.%m.%d"
   config_param :utc_index, :bool, :default => true
   config_param :type_name, :string, :default => "fluentd"
+  config_param :type_delimiter, :string, :default => nil
   config_param :index_name, :string, :default => "fluentd"
   config_param :id_key, :string, :default => nil
   config_param :parent_key, :string, :default => nil
@@ -30,7 +31,6 @@ class Fluent::ElasticsearchOutput < Fluent::BufferedOutput
   config_param :time_key, :string, :default => nil
   config_param :ssl_verify, :bool, :default => true
   config_param :remove_keys, :string, :default => nil
-  config_param :use_kube_meta, :bool, :default => false
   config_param :client_key, :string, :default => nil
   config_param :client_cert, :string, :default => nil
   config_param :client_key_pass, :string, :default => nil
@@ -146,11 +146,7 @@ class Fluent::ElasticsearchOutput < Fluent::BufferedOutput
           record.merge!({"@timestamp" => Time.at(time).to_datetime.to_s})
         end
 
-        if @use_kube_meta
-          logstash_prefix = dynamic_param(@logstash_prefix, record)
-        else
-          logstash_prefix = expand_param(@logstash_prefix, tag, record)
-        end
+        logstash_prefix = expand_param(@logstash_prefix, tag, record)
 
         if @utc_index
           target_index = "#{logstash_prefix}-#{Time.at(time).getutc.strftime("#{@logstash_dateformat}")}"
@@ -165,11 +161,8 @@ class Fluent::ElasticsearchOutput < Fluent::BufferedOutput
         record.merge!(@tag_key => tag)
       end
 
-      if @use_kube_meta
-        target_type = dynamic_param(@type_name, record)
-      else
-        target_type = expand_param(@type_name, tag, record)
-      end
+      target_type = expand_param(@type_name, tag, record)
+      target_type = target_type.gsub! '.', @type_delimiter if @type_delimiter
 
       meta = { "index" => {"_index" => target_index, "_type" => target_type} }
       if @id_key && record[@id_key]
@@ -208,29 +201,11 @@ class Fluent::ElasticsearchOutput < Fluent::BufferedOutput
 
   def expand_param(param, tag, record)
     # param.gsub(/\${tag}/, tag).gsub(/(\${([a-zA-Z0-9_]+)})/, record.fetch($2, $1))
-    param.gsub(/\${tag}/, tag).gsub(/\${([a-zA-Z0-9_]+)}/) {
-      record[$1]
+    param.gsub(/\${tag}/, tag).gsub(/\${([a-zA-Z0-9_\.]+)}/) {
+      value = record.clone
+      $1.split('.').each { |key| value = value[key] }
+      value
     }
   end
 
-  def dynamic_param(param, record)
-    temp_record = record
-    params = param.split('.', 2)
-    key = value_finder(params[0], params[1], record)
-    if key.nil?
-      "openshift"
-    else
-      key
-    end
-  end
-  def value_finder(key, param, record)
-    if record.has_key?(key)
-      if param.nil?
-        record[key]
-      else
-        params = param.split('.', 2)
-        value_finder(params[0], params[1], record[key])
-     end
-   end
-  end
 end
