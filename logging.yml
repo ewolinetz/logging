@@ -87,6 +87,9 @@ items:
   kind: Pod
   metadata:
     name: fluentd-elasticsearch
+    labels:
+      provider: "openshift"
+      component: "fluentd"
   spec:
     containers:
     - name: fluentd-elasticsearch
@@ -110,6 +113,8 @@ items:
         value: "es-logging"
       - name: "ES_PORT"
         value: "9200"
+      - name: "K8S_HOST_URL"
+        value: "https://<your host ip>:8443"
     volumes:
     - name: varlog
       hostPath:
