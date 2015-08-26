@@ -201,10 +201,8 @@ class Fluent::ElasticsearchOutput < Fluent::BufferedOutput
 
   def expand_param(param, tag, record)
     # param.gsub(/\${tag}/, tag).gsub(/(\${([a-zA-Z0-9_]+)})/, record.fetch($2, $1))
-    param.gsub(/\${tag}/, tag).gsub(/\${([a-zA-Z0-9_\.]+)}/) {
-      value = record.clone
-      $1.split('.').each { |key| value = value[key] }
-      value
+    param.gsub(/\${tag}/, tag).gsub(/\${([a-zA-Z0-9_]+)}/) {
+      record[$1]
     }
   end
 
