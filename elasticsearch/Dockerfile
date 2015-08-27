@@ -1,11 +1,13 @@
-FROM openshift/base-centos7
+FROM centos:centos7
 
 MAINTAINER Eric Wolinetz <ewolinet@redhat.com>
 
 EXPOSE 9200
 EXPOSE 9300
 
-ENV JAVA_VER=1.8.0 \
+ENV HOME=/opt/app-root/src \
+  PATH=/opt/app-root/src/bin:/opt/app-root-bin:$PATH \
+  JAVA_VER=1.8.0 \
   ES_VER=1.5.2
 
 LABEL io.k8s.description="Elasticsearch container for allowing indexing and searching of aggregated logs" \
@@ -18,7 +20,8 @@ COPY elasticsearch.repo /etc/yum.repos.d/elasticsearch.repo
 RUN rpm --import https://packages.elastic.co/GPG-KEY-elasticsearch && \
   yum install -y -- setopt=tsflags=nodocs \
   java-1.8.0-openjdk \
-  elasticsearch
+  elasticsearch && \
+  mkdir -p ${HOME}
 
 RUN mkdir -p /usr/share/elasticsearch/config && \
   cp /etc/elasticsearch/* /usr/share/elasticsearch/config
@@ -30,8 +33,9 @@ RUN sh initialize.sh
 COPY elasticsearch.yml /usr/share/elasticsearch/config/elasticsearch.yml
 COPY logging.yml /usr/share/elasticsearch/config/logging.yml
 
-RUN chmod -R og+w /usr/share/elasticsearch
+RUN chmod -R og+w /usr/share/elasticsearch && \
+  chmod -R og+w ${HOME}
 
-USER default
+WORKDIR ${HOME}
 
 CMD ["/usr/share/elasticsearch/bin/elasticsearch"]
