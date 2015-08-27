@@ -24,7 +24,7 @@ sleep 30; curl -XPUT 'http://localhost:9200/searchguard/ac/ac?pretty' -d '
     },
     {
       "__Comment__": "This is so that Kibana can only read in all indices",
-      "uesrs": ["kibana"],
+      "users": ["kibana"],
       "filters_bypass": [],
       "filters_execute": ["actionrequestfilter.kibana"]
     }
@@ -32,4 +32,4 @@ sleep 30; curl -XPUT 'http://localhost:9200/searchguard/ac/ac?pretty' -d '
 
 /usr/share/elasticsearch/bin/plugin -i com.floragunn/search-guard/0.5
 
-kill `cat /var/run/elasticsearch/elasticsearch.pid`
+sleep 30; kill `cat /var/run/elasticsearch/elasticsearch.pid`
