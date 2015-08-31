@@ -6,7 +6,7 @@ EXPOSE 9200
 EXPOSE 9300
 
 ENV HOME=/opt/app-root/src \
-  PATH=/opt/app-root/src/bin:/opt/app-root-bin:$PATH \
+  PATH=/opt/app-root/src/bin:/opt/app-root/bin:$PATH \
   JAVA_VER=1.8.0 \
   ES_VER=1.5.2
 
