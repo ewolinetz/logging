@@ -3,6 +3,9 @@ script.disable_dynamic: false
 #searchguard.key_path: .
 #searchguard.auditlog.enabled: true
 
+# If this is true (default is false) then allow all HTTP REST requests from nodes loopback (e.g. localhost)
+searchguard.allow_all_from_loopback: false
+
 ############################# Search-Guard ################################
 #searchguard.check_for_root: false
 

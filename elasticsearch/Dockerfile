@@ -28,14 +28,13 @@ RUN mkdir -p /usr/share/elasticsearch/config && \
 
 #VOLUME /usr/share/elasticsearch/data
 
-COPY initialize.sh /opt/app-root/src/initialize.sh
+ADD *.sh /opt/app-root/src/
 RUN sh /opt/app-root/src/initialize.sh
-COPY elasticsearch.yml /usr/share/elasticsearch/config/elasticsearch.yml
-COPY logging.yml /usr/share/elasticsearch/config/logging.yml
+ADD *.yml /usr/share/elasticsearch/config/
 
 RUN chmod -R og+w /usr/share/elasticsearch && \
   chmod -R og+w ${HOME}
 
 WORKDIR ${HOME}
 
-CMD ["/usr/share/elasticsearch/bin/elasticsearch"]
+CMD ["sh", "/opt/app-root/src/run.sh"]
