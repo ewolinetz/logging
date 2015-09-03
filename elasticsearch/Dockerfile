@@ -29,7 +29,7 @@ RUN mkdir -p /usr/share/elasticsearch/config && \
 #VOLUME /usr/share/elasticsearch/data
 
 COPY initialize.sh /opt/app-root/src/initialize.sh
-RUN sh initialize.sh
+RUN sh /opt/app-root/src/initialize.sh
 COPY elasticsearch.yml /usr/share/elasticsearch/config/elasticsearch.yml
 COPY logging.yml /usr/share/elasticsearch/config/logging.yml
 
