@@ -114,7 +114,7 @@ items:
         volumes:
           - name: certs
             secret:
-              secretName: elasticsearch
+              secretName: elasticsearch-ops
 -
   apiVersion: "v1"
   kind: "ReplicationController"
@@ -226,7 +226,7 @@ items:
   apiVersion: "v1"
   kind: "Service"
   metadata:
-    name: "kibana"
+    name: "kibana-ops"
   spec:
     ports:
       -
@@ -274,7 +274,7 @@ items:
         volumes:
           - name: certs
             secret:
-              secretName: kibana
+              secretName: kibana-ops
 -
   apiVersion: "v1"
   kind: "Service"
